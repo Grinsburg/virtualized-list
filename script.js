@@ -16,24 +16,15 @@
         })
         .then(function(data) {
             let jsn = data
-            for (const index in jsn) {
-                if (jsn) {
-                    const element = jsn[index];
-                    var elId = element.id;
-                }
-            }
-
-            var items = Array(elId);
-
+            let items = Array(data.id);
             for (const key in jsn) {
                 let element = jsn[key];
+                let id = element.id;
                 let name = element.name;
-                items[key] = key + ' ' + name;
+                items[key] = id + ' ' + name;
                 console.log(element.id);
-                console.log(name);
             }
-            var hidescrollbar = false;
-            // количество строк
+            // var hidescrollbar = false;
             var holder = document.getElementById('listHolder');
             var view = null
                 //get the height of a single item
@@ -79,7 +70,7 @@
             }
             refreshWindow();
             document.getElementById('heightForcer').style.height = (items.length * itemHeight) + 'px';
-            if (hidescrollbar) {
+            if (hidescrollbar = false) {
                 //work around for non-chrome browsers, hides the scrollbar
                 holder.style.width = (holder.offsetWidth * 2 - view.offsetWidth) + 'px';
             }
