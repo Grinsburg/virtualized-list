@@ -8,7 +8,7 @@
         cache: 'default'
     }
 
-    let myRequest = new Request("./data.json", myInit);
+    let myRequest = new Request("https://jsonplaceholder.typicode.com/albums/1/photos", myInit);
 
     fetch(myRequest)
         .then(function(resp) {
@@ -17,25 +17,24 @@
         .then(function(data) {
             let jsn = data
             let items = Array(data.id);
+            let ph = document.createElement('img');
             for (const key in jsn) {
                 let element = jsn[key];
                 let id = element.id;
-                let name = element.name;
-                items[key] = id + ' ' + name;
-                console.log(element.id);
+                let name = element.title;
+                let photos = element.url;
+                items[key] = `<img alt="${name}" src="${photos}"> ${id} ${name}`;
             }
-            // var hidescrollbar = false;
-            var holder = document.getElementById('listHolder');
-            var view = null
-                //get the height of a single item
-            var itemHeight = (function() {
-                //generate a fake item
+            let holder = document.getElementById('listHolder');
+            let view = null
+            let itemHeight = (function() {
                 var div = document.createElement('div');
+                div.appendChild(ph)
                 div.className = 'listItem';
                 div.innerHTML = 'testing height';
                 holder.appendChild(div);
                 //get its height and remove it
-                var output = div.offsetHeight;
+                let output = div.offsetHeight;
                 holder.removeChild(div);
                 return output;
             })();
@@ -49,27 +48,27 @@
                 //create new view
                 view = holder.appendChild(document.createElement('div'));
 
-                var firstItem = Math.floor(holder.scrollTop / itemHeight);
-                var lastItem = firstItem + Math.ceil(holder.offsetHeight / itemHeight) + 1;
-                if (lastItem + 1 >= items.length)
+                let firstItem = Math.floor(holder.scrollTop / itemHeight);
+                let lastItem = firstItem + Math.ceil(holder.offsetHeight / itemHeight) + 1;
+                if (lastItem + 1 >= items.length) {
                     lastItem = items.length - 1;
-
+                }
                 //position view in users face
                 view.id = 'view';
                 view.style.top = (firstItem * itemHeight) + 'px';
 
-                var div;
+                let div;
                 //add the items
-                for (var index = firstItem; index <= lastItem; ++index) {
+                for (let index = firstItem; index <= lastItem; ++index) {
                     div = document.createElement('div');
                     div.innerHTML = items[index];
                     div.className = "listItem";
                     view.appendChild(div);
                 }
-                // console.log('viewing items ' + firstItem + ' to ' + lastItem);
             }
             refreshWindow();
             document.getElementById('heightForcer').style.height = (items.length * itemHeight) + 'px';
+            let hidescrollbar = false;
             if (hidescrollbar = false) {
                 //work around for non-chrome browsers, hides the scrollbar
                 holder.style.width = (holder.offsetWidth * 2 - view.offsetWidth) + 'px';
@@ -85,4 +84,4 @@
                 holder.attachEvent("onscroll", delayingHandler);
         })
 
-}());
+}())
